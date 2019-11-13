@@ -11,7 +11,7 @@ namespace cadnvert
                 Console.WriteLine("/************************ USAGE ************************/");
                 Console.WriteLine("pass a fully qualified file uri to cadnvert. Example:");
                 Console.WriteLine(@"cadnvert [uri]");
-                new ValidateFile().Block.LinkTo(new TransformBlock().Clo<WorkSet,TOutput>(), )
+                //new ValidateFile().Block.LinkTo(new TransformBlock().Clo<WorkSet,TOutput>(), )
 
                 return -1; 
             }
