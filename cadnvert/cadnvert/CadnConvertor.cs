@@ -14,10 +14,11 @@ namespace cadnvert
                     using (var reader = File.OpenText(cadnFile))
                     {
                         var line = reader.ReadLine(); // ignore first line 
-                        writer.WriteLine(TemplateParser.GetCsvHeaders(templateFile)); // write headers to the outputfile 
+                        writer.WriteLine(
+                            TemplateParser.GetCsvHeaders(templateFile)); // write headers to the outputfile 
                         while ((line = reader.ReadLine()) != null)
                         {
-                            line = line.Replace("|", ",");
+                            line = ConvertToCsvLine(line);
                             writer.WriteLine(line);
                         }
                     }
@@ -27,7 +28,23 @@ namespace cadnvert
             {
                 return null;
             }
+
             return outputFileName;
+        }
+
+        private static string ConvertToCsvLine(string cadnLine)
+        {
+            var fields = cadnLine.Split("|");
+            var csvLine = "";
+            var prefix = "";
+            foreach (var field in fields)
+            {
+                csvLine += $"{prefix}\"{field}\"";
+                prefix = ",";
+            }
+
+            return csvLine;
         }
     }
 }
+
