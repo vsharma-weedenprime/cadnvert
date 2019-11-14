@@ -9,7 +9,6 @@ namespace cadnvert
     {
         static int Main(string[] args)
         {
-            //var exitEvent = new ManualResetEvent(false);
                 if (args.Length != 1)
             {
                 Console.WriteLine("/************************ USAGE ************************/");
@@ -19,18 +18,11 @@ namespace cadnvert
 
             }
 
-            /*
-            Console.CancelKeyPress += (sender, eventArgs) => {
-                eventArgs.Cancel = true;
-                exitEvent.Set();
-            };
-            */
-
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
             var validateBlock = new ValidateFile().Block;
             var translateBlock = new TranslateCadn().Block;
 
-            // pipeline compostion  
+            // pipeline composition  
             validateBlock.LinkTo(translateBlock, linkOptions);
 
             // start processing 
@@ -41,13 +33,6 @@ namespace cadnvert
 
             // wait for task completion 
             translateBlock.Completion.Wait();
-
-            /*
-            Console.WriteLine($@"Processing file '{args[0]}'. [Version:{Assembly.GetExecutingAssembly().GetName().Version}]");
-            Console.WriteLine(@"Press 'Ctrl+C' to quit.");
-
-            exitEvent.WaitOne();
-            */
 
             return 0;
         }

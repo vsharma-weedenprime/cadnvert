@@ -17,7 +17,7 @@ namespace cadnvert
             }
             else
             {
-                Console.WriteLine("Conversion sucessful.");
+                Console.WriteLine("Conversion successful.");
             }
 
         });
