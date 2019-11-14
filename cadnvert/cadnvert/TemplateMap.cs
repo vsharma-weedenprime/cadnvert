@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +20,7 @@ namespace cadnvert
         {
             foreach (var fileTemplateMapItem in Map.Where(fileTemplateMapItem => fileName.IsWildCardMatch(fileTemplateMapItem.Key)))
             {
-                return Path.Combine(Assembly.GetExecutingAssembly().CodeBase, fileTemplateMapItem.Value);
+                return new Uri( Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase), fileTemplateMapItem.Value)).AbsoluteUri;
             }
             return string.Empty;
         }

@@ -1,13 +1,25 @@
-﻿using System.Threading.Tasks.Dataflow;
+﻿using System;
+using System.Threading.Tasks.Dataflow;
 
 namespace cadnvert
 {
     public class TranslateCadn
     {
-        public TransformBlock<WorkSet, bool> Block { get; } = new TransformBlock<WorkSet, bool>(workSet =>
+        public ActionBlock<WorkSet> Block { get; } = new ActionBlock<WorkSet>(workSet =>
         {
+            if (!workSet.FileIsValid)
+                return;
 
-            return true;
+            var csv = CadnConvertor.ConvertToCsv(workSet.File, workSet.Template);
+            if (string.IsNullOrEmpty(csv))
+            {
+                Console.WriteLine("Conversion failed.");
+            }
+            else
+            {
+                Console.WriteLine("Conversion sucessful.");
+            }
+
         });
     }
 }
