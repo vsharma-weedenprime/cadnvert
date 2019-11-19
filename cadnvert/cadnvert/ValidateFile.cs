@@ -30,7 +30,7 @@ namespace cadnvert
             if (payload.TimeStampDestination)
             {
                 payload.DestinationFolder = Path.Combine(payload.DestinationFolder,
-                    File.GetCreationTime(payload.SourceFile).ToString("yyyy-MM-dd_HH-mm"));
+                    File.GetCreationTime(payload.SourceFile).ToString("yyyy-MM-dd"));
                 Directory.CreateDirectory(payload.DestinationFolder);
             }
 
