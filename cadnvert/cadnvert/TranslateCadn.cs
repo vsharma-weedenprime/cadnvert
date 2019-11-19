@@ -11,15 +11,7 @@ namespace cadnvert
                 return;
 
             var csv = CadnConvertor.ConvertToCsv(workSet.File, workSet.Template, workSet.DestinationFile);
-            if (string.IsNullOrEmpty(csv))
-            {
-                Console.WriteLine("Conversion failed.");
-            }
-            else
-            {
-                Console.WriteLine("Conversion successful.");
-            }
-
+            Console.WriteLine(string.IsNullOrEmpty(csv) ? "Conversion failed." : "Conversion successful.");
         });
     }
 }

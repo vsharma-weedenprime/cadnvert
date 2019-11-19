@@ -8,19 +8,15 @@ namespace cadnvert
         {
             try
             {
-                using (var writer = new StreamWriter(File.Create(outputFileName)))
+                using var writer = new StreamWriter(File.Create(outputFileName));
+                using var reader = File.OpenText(cadnFile);
+                string line; // ignore first line 
+                writer.WriteLine(
+                    TemplateParser.GetCsvHeaders(templateFile)); // write headers to the output file 
+                while ((line = reader.ReadLine()) != null)
                 {
-                    using (var reader = File.OpenText(cadnFile))
-                    {
-                        var line = reader.ReadLine(); // ignore first line 
-                        writer.WriteLine(
-                            TemplateParser.GetCsvHeaders(templateFile)); // write headers to the output file 
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            line = ConvertToCsvLine(line);
-                            writer.WriteLine(line);
-                        }
-                    }
+                    line = ConvertToCsvLine(line);
+                    writer.WriteLine(line);
                 }
             }
             catch

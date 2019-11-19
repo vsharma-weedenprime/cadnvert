@@ -11,15 +11,11 @@ namespace cadnvert
             IWorkbook wb;
 
 
-            using (WebClient webClient = new WebClient())
+            using (var webClient = new WebClient())
             {
-                using (Stream stream = webClient.OpenRead(templatePath))
-                {
-                    using (StreamReader sr = new StreamReader(stream))
-                    {
-                        wb = WorkbookFactory.Create(sr.BaseStream);
-                    }
-                }
+                using var stream = webClient.OpenRead(templatePath);
+                using var sr = new StreamReader(stream);
+                wb = WorkbookFactory.Create(sr.BaseStream);
             }
 
             var sheet = wb.GetSheetAt(0);// get the first / default sheet 
@@ -30,7 +26,7 @@ namespace cadnvert
                 var prefix = ",";
                 if (row == 1)
                     prefix = "";
-                var xlRow = sheet.GetRow(row);
+                sheet.GetRow(row);
                 if (sheet.GetRow(row) == null) //null is when the row only contains empty cells 
                 {
                     headers += prefix;
