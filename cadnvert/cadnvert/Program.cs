@@ -9,13 +9,13 @@ namespace cadnvert
     {
         static int Main(string[] args)
         {
-                if (args.Length != 1)
+            if (args.Length != 1)
             {
                 Console.WriteLine("/************************ USAGE ************************/");
-                Console.WriteLine("pass a fully qualified file uri to cadnvert. Example:");
-                Console.WriteLine(@"cadnvert [uri]");
+                Console.WriteLine("pass a fully qualified source file uri and an optional ");
+                Console.WriteLine("destination folder to cadnvert.  Example:");
+                Console.WriteLine(@"cadnvert [uri] <destination>");
                 return -1;
-
             }
 
             var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
@@ -26,7 +26,12 @@ namespace cadnvert
             validateBlock.LinkTo(translateBlock, linkOptions);
 
             // start processing 
-            validateBlock.Post(args[0]);
+            validateBlock.Post(new Payload()
+            {
+                SourceFile = args[0], 
+                DestinationFolder = args.Length > 1 ? args[1] : "", 
+                TimeStampDestination = args.Length <= 2 || bool.Parse(args[2])
+            });
 
             // mark the validation block complete 
             validateBlock.Complete();

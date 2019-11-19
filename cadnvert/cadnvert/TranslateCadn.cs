@@ -10,7 +10,7 @@ namespace cadnvert
             if (!workSet.FileIsValid)
                 return;
 
-            var csv = CadnConvertor.ConvertToCsv(workSet.File, workSet.Template);
+            var csv = CadnConvertor.ConvertToCsv(workSet.File, workSet.Template, workSet.DestinationFile);
             if (string.IsNullOrEmpty(csv))
             {
                 Console.WriteLine("Conversion failed.");

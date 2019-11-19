@@ -4,9 +4,8 @@ namespace cadnvert
 {
     public static class CadnConvertor
     {
-        public static string ConvertToCsv(string cadnFile, string templateFile)
+        public static string ConvertToCsv(string cadnFile, string templateFile, string outputFileName)
         {
-            var outputFileName = $"{cadnFile}.csv";
             try
             {
                 using (var writer = new StreamWriter(File.Create(outputFileName)))
@@ -15,7 +14,7 @@ namespace cadnvert
                     {
                         var line = reader.ReadLine(); // ignore first line 
                         writer.WriteLine(
-                            TemplateParser.GetCsvHeaders(templateFile)); // write headers to the outputfile 
+                            TemplateParser.GetCsvHeaders(templateFile)); // write headers to the output file 
                         while ((line = reader.ReadLine()) != null)
                         {
                             line = ConvertToCsvLine(line);

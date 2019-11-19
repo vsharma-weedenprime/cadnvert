@@ -5,24 +5,38 @@ namespace cadnvert
 {
     public class ValidateFile
     {
-        public TransformBlock<string, WorkSet> Block { get; } = new TransformBlock<string, WorkSet>(file =>
+        public TransformBlock<Payload, WorkSet> Block { get; } = new TransformBlock<Payload, WorkSet>(payload =>
         {
-            if (!File.Exists(file))
+            if (!File.Exists(payload.SourceFile))
             {
-                Console.WriteLine($"Invalid file {file}");
+                Console.WriteLine($"Invalid file {payload.SourceFile}");
                 return new WorkSet() { FileIsValid = false };
             }
-            var templateFullPath =  TemplateMap.GetTemplate(Path.GetFileName(file));
+            var templateFullPath =  TemplateMap.GetTemplate(Path.GetFileName(payload.SourceFile));
             if (string.IsNullOrEmpty(templateFullPath))
             {
-                Console.WriteLine($"No template found for the file {file}");
+                Console.WriteLine($"No template found for the file {payload.SourceFile}");
                 return new WorkSet() { FileIsValid = false };
             }
+
+            if (!Directory.Exists(payload.DestinationFolder))
+            {
+                Console.WriteLine($"Invalid destination path: {payload.DestinationFolder}");
+                payload.DestinationFolder = Path.GetDirectoryName(payload.SourceFile);
+                Console.WriteLine($"Switching to default destination path: {payload.DestinationFolder}");
+            }
+          
+
+            var destinationFile  = Path.Combine(
+                payload.DestinationFolder, 
+                $"{(payload.TimeStampDestination? File.GetCreationTime(payload.SourceFile).ToString("yyyy-MM-dd_HH-mm") : string.Empty)}_{Path.GetFileName(payload.SourceFile)}.csv");
+
             return new WorkSet()
             {
                 FileIsValid = true, 
-                File = file, 
-                Template = templateFullPath
+                File = payload.SourceFile, 
+                Template = templateFullPath,
+                DestinationFile = destinationFile
             };
         });
     }
