@@ -10,13 +10,14 @@ namespace cadnvert
             if (!File.Exists(payload.SourceFile))
             {
                 Console.WriteLine($"Invalid file {payload.SourceFile}");
-                return new WorkSet() { FileIsValid = false };
+                return new WorkSet() {FileIsValid = false};
             }
-            var templateFullPath =  TemplateMap.GetTemplate(Path.GetFileName(payload.SourceFile));
+
+            var templateFullPath = TemplateMap.GetTemplate(Path.GetFileName(payload.SourceFile));
             if (string.IsNullOrEmpty(templateFullPath))
             {
                 Console.WriteLine($"No template found for the file {payload.SourceFile}");
-                return new WorkSet() { FileIsValid = false };
+                return new WorkSet() {FileIsValid = false};
             }
 
             if (!Directory.Exists(payload.DestinationFolder))
@@ -25,11 +26,17 @@ namespace cadnvert
                 payload.DestinationFolder = Path.GetDirectoryName(payload.SourceFile);
                 Console.WriteLine($"Switching to default destination path: {payload.DestinationFolder}");
             }
-          
+
+            if (payload.TimeStampDestination)
+            {
+                payload.DestinationFolder = Path.Combine(payload.DestinationFolder,
+                    File.GetCreationTime(payload.SourceFile).ToString("yyyy-MM-dd_HH-mm"));
+                Directory.CreateDirectory(payload.DestinationFolder);
+            }
 
             var destinationFile  = Path.Combine(
                 payload.DestinationFolder, 
-                $"{(payload.TimeStampDestination? File.GetCreationTime(payload.SourceFile).ToString("yyyy-MM-dd_HH-mm") : string.Empty)}_{Path.GetFileName(payload.SourceFile)}.csv");
+                $"{Path.GetFileName(payload.SourceFile)}.csv");
 
             return new WorkSet()
             {
