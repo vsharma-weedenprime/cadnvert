@@ -9,7 +9,7 @@ namespace cadnvert
     {
         static int Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length == 0)
             {
                 Console.WriteLine("/************************ USAGE ************************/");
                 Console.WriteLine("pass a fully qualified source file uri and an optional ");
