@@ -26,20 +26,21 @@ namespace cadnvert
                 var prefix = ",";
                 if (row == 1)
                     prefix = "";
-                sheet.GetRow(row);
-                if (sheet.GetRow(row) == null) //null is when the row only contains empty cells 
+                var csvRow = sheet.GetRow(row);
+                if (csvRow == null) //null is when the row only contains empty cells 
                 {
                     break;
                 }
-                else
+                var cellValue = csvRow.GetCell(4).StringCellValue;
+                if (cellValue.ToUpper() == "SPACES" || cellValue.ToUpper() == "FILLER")
                 {
-                    var cellValue = sheet.GetRow(row).GetCell(4).StringCellValue;
-                    if (cellValue.ToUpper() == "SPACES" || cellValue.ToUpper() == "FILLER")
-                    {
-                        continue;
-                    }
-                    headers += prefix + cellValue;
+                    continue;
                 }
+                if (string.IsNullOrWhiteSpace(cellValue.Trim()))
+                {
+                    break;
+                }
+                headers += prefix + cellValue;
             }
             return headers;
         }

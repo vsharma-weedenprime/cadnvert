@@ -10,7 +10,7 @@ namespace cadnvert
             {
                 using var writer = new StreamWriter(File.Create(outputFileName));
                 using var reader = File.OpenText(cadnFile);
-                string line; // ignore first line 
+                string line = reader.ReadLine(); // ignore first line 
                 writer.WriteLine(
                     TemplateParser.GetCsvHeaders(templateFile)); // write headers to the output file 
                 while ((line = reader.ReadLine()) != null)
