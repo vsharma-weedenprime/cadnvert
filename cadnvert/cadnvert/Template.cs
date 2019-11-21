@@ -29,13 +29,12 @@ namespace cadnvert
                 sheet.GetRow(row);
                 if (sheet.GetRow(row) == null) //null is when the row only contains empty cells 
                 {
-                    headers += prefix;
-                    continue;
+                    break;
                 }
                 else
                 {
                     var cellValue = sheet.GetRow(row).GetCell(4).StringCellValue;
-                    if (cellValue.ToUpper() == "SPACES")
+                    if (cellValue.ToUpper() == "SPACES" || cellValue.ToUpper() == "FILLER")
                     {
                         continue;
                     }

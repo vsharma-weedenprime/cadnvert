@@ -19,6 +19,7 @@ namespace cadnvert
 
         #region <private>
 
+
         private static string WildCardToRegular(string value)
         {
             return "^" + Regex.Escape(value).Replace("\\?", ".").Replace("\\*", ".*") + "$";
